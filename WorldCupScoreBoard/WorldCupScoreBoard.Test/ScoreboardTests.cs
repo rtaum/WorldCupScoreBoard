@@ -35,6 +35,16 @@ namespace WorldCupScoreBoard.Test
                 .WithMessage("Scoreboard already contains a match with the same teams");
         }
 
+        [Fact]
+        public void Scoreboard_Should_Contain_Correct_Match()
+        {
+            var scoreboard = new Scoreboard();
+            Match match = BuildMatch();
+            scoreboard.AddMatch(match);
+
+            scoreboard.GetMatchesSummary().Should().Contain((m) => m.Id == match.Id);
+        }
+
         private static Match BuildMatch()
         {
             var homeTeam = new Team("Germany");
