@@ -29,6 +29,11 @@
 
         public void Start()
         {
+            if (Status == MatchStatus.Started)
+            {
+                throw new InvalidOperationException("Match is already started");
+            }
+            
             Status = MatchStatus.Started;
         }
 
