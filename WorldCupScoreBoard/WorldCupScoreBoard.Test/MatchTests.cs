@@ -31,6 +31,12 @@ namespace WorldCupScoreBoard.Test
         }
 
         [Fact]
+        public void Match_Summary_Should_Contain_Correct_Match_Info()
+        {
+            _match.Summary.Should().Be($"{_match.HomeTeam.Name} {_match.HomeTeamScore} - {_match.AwayTeam.Name} {_match.AwayTeamScore}");
+        }
+
+        [Fact]
         public void Match_Should_Start_With_No_Scores()
         {
             _match.HomeTeamScore.Should().Be(0);
