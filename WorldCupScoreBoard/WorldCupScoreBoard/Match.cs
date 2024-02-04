@@ -56,6 +56,11 @@ namespace WorldCupScoreBoard
 
         public void UpdateScores(int homeTeamScore, int awayTeamScore)
         {
+            if (homeTeamScore < 0 || awayTeamScore < 0)
+            {
+                throw new ArgumentException("Score can not be negative");
+            }
+
             HomeTeamScore = homeTeamScore;
             AwayTeamScore = awayTeamScore;
         }

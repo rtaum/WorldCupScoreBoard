@@ -120,7 +120,7 @@ namespace WorldCupScoreBoard.Test
         public void Match_Update_Teams_Score_With_Negative_Values_Should_Throw_Exception(int homeTeamScore, int awayTeamScore)
         {
             Action act = () => _match.UpdateScores(homeTeamScore, awayTeamScore);
-            act.Should().Throw<ArgumentOutOfRangeException>()
+            act.Should().Throw<ArgumentException>()
                 .WithMessage("Score can not be negative");
         }
     }
