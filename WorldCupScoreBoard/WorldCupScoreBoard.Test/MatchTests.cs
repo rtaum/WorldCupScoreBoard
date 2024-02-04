@@ -103,5 +103,14 @@ namespace WorldCupScoreBoard.Test
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("Score can not be negative");
         }
+
+        [Fact]
+        public void Match_Update_Teams_Score_Should_Change_Scores()
+        {
+            _match.UpdateScores(homeTeamScore: 2, awayTeamScore: 1);
+
+            _match.HomeTeamScore.Should().Be(2);
+            _match.AwayTeamScore.Should().Be(1);
+        }
     }
 }
