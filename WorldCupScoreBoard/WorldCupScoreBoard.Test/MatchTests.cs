@@ -135,5 +135,13 @@ namespace WorldCupScoreBoard.Test
 
             match.StartTime.Should().Be(startTime);
         }
+
+        [Fact]
+        public void Match_Default_Status_Should_Be_None()
+        {
+            var match = new Match(_homeTeam, _awayTeam, DateTime.MinValue);
+
+            match.Status.Should().Be(MatchStatus.None);
+        }
     }
 }
