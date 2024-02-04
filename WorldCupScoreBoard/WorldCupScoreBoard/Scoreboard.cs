@@ -13,6 +13,14 @@ namespace WorldCupScoreBoard
 
         public void AddMatch(Match match)
         {
+            if (_matches.Any(m => m.HomeTeam == match.HomeTeam
+                || m.AwayTeam == match.HomeTeam
+                || m.AwayTeam == match.HomeTeam
+                || m.AwayTeam == match.AwayTeam))
+            {
+                throw new ArgumentException("Scoreboard already contains a match with the same teams");
+            }
+
             _matches.Add(match);
         }
 
