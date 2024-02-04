@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Text.RegularExpressions;
 
 namespace WorldCupScoreBoard
 {
@@ -38,6 +39,10 @@ namespace WorldCupScoreBoard
             if (match != null)
             {
                 match.Start();
+            }
+            else
+            {
+                throw new ArgumentException($"Match with Id '{id}' cannot be found");
             }
         }
     }
