@@ -21,5 +21,12 @@ namespace WorldCupScoreBoard.Test
             _match.HomeTeam.Should().Be(_homeTeam);
             _match.AwayTeam.Should().Be(_awayTeam);
         }
+
+        [Fact]
+        public void Match_Should_Start_With_No_Scores()
+        {
+            _match.HomeTeamScore.Should().Be(0);
+            _match.AwayTeamScore.Should().Be(0);
+        }
     }
 }
