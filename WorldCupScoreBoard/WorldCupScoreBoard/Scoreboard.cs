@@ -36,35 +36,34 @@ namespace WorldCupScoreBoard
 
         public void StartMatch(Guid id)
         {
-            var match = _matches.FirstOrDefault(m => m.Id == id);
-            if (match == null)
-            {
-                throw new ArgumentException($"Match with Id '{id}' cannot be found");
-            }
+            var match = GetMatchBeId(id);
 
             match.Start();
         }
-        
+
         public void FinishMatch(Guid id)
         {
-            var match = _matches.FirstOrDefault(m => m.Id == id);
-            if (match == null)
-            {
-                throw new ArgumentException($"Match with Id '{id}' cannot be found");
-            }
+            var match = GetMatchBeId(id);
 
             match.Finish();
         }
 
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
         {
+            var match = GetMatchBeId(id);
+
+            match.UpdateScores(homeTeamScore, awayTeamScore);
+        }
+
+        private Match GetMatchBeId(Guid id)
+        {
             var match = _matches.FirstOrDefault(m => m.Id == id);
             if (match == null)
             {
                 throw new ArgumentException($"Match with Id '{id}' cannot be found");
             }
 
-            match.UpdateScores(homeTeamScore, awayTeamScore);
+            return match;
         }
     }
 }
