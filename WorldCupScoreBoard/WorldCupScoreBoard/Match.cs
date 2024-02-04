@@ -58,9 +58,11 @@ namespace WorldCupScoreBoard
         {
             if (homeTeamScore < 0 || awayTeamScore < 0)
             {
+                // Scores cannot have negative values
                 throw new ArgumentException("Score can not be negative");
             }
 
+            // theoretically score can change in any way. Goals can be scored or cancelled.
             HomeTeamScore = homeTeamScore;
             AwayTeamScore = awayTeamScore;
         }
