@@ -152,11 +152,10 @@ namespace WorldCupScoreBoard.Test
             Match match = BuildMatch();
             scoreboard.AddMatch(match);
 
-            var matchId = Guid.Empty;
-            Action act = () => scoreboard.UpdateMatchScore(matchId, 0, 0);
+            Action act = () => scoreboard.UpdateMatchScore(match.Id, 0, 0);
 
             act.Should().Throw<ArgumentException>()
-                .WithMessage($"Match score cannot be update. Match '{matchId}' is not started");
+                .WithMessage($"Match score cannot be update. Match '{match.Id}' is not started");
         }
 
         private static Match BuildMatch()

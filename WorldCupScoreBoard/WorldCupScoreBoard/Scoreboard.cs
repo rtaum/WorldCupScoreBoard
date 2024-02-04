@@ -52,6 +52,10 @@ namespace WorldCupScoreBoard
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
         {
             var match = GetMatchBeId(id);
+            if (match.Status != MatchStatus.Started)
+            {
+                throw new ArgumentException($"Match score cannot be update. Match '{id}' is not started");
+            }
 
             match.UpdateScores(homeTeamScore, awayTeamScore);
         }
