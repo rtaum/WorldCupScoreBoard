@@ -7,11 +7,13 @@ namespace WorldCupScoreBoard.Test
         private Match _match;
         private Team _homeTeam;
         private Team _awayTeam;
+        private Team _outOfRangeTeam;
 
         public MatchTests()
         {
             _homeTeam = new Team("Germany");
             _awayTeam = new Team("Brazil");
+            _outOfRangeTeam = new Team("Italy");
             _match = new Match(_homeTeam, _awayTeam);
         }
 
@@ -43,6 +45,14 @@ namespace WorldCupScoreBoard.Test
             _match.TeamScoredGoal(_awayTeam);
             _match.HomeTeamScore.Should().Be(0);
             _match.AwayTeamScore.Should().Be(1);
+        }
+
+        [Fact]
+        public void Match_Wrong_Team_Goal_Should_Throw_Exception()
+        {
+            Action act = () => _match.TeamScoredGoal(_outOfRangeTeam);
+            act.Should().Throw<ArgumentException>()
+                .WithParameterName($"Team {_outOfRangeTeam.Name} is not in the match.");
         }
     }
 }

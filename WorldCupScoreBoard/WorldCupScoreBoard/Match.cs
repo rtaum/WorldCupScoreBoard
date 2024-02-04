@@ -32,7 +32,7 @@ namespace WorldCupScoreBoard
             }
             else
             {
-                throw new ArgumentException(nameof(team));
+                throw new ArgumentException(nameof(team), $"Team {team.Name} is not in the match.");
             }
         }
     }
