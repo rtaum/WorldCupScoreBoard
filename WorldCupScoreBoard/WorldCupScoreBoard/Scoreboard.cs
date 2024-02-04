@@ -31,7 +31,7 @@ namespace WorldCupScoreBoard
         public IReadOnlyCollection<MatchSummary> GetMatchesSummary()
         {
             return _matches
-                .OrderBy(m => m.AwayTeamScore + m.HomeTeamScore)
+                .OrderByDescending(m => m.AwayTeamScore + m.HomeTeamScore)
                 .ThenByDescending(m => m.StartTime)
                 .Select(m => new MatchSummary(m.Id, m.Summary, m.Status))
                 .ToImmutableArray();
