@@ -26,6 +26,10 @@ namespace WorldCupScoreBoard
             {
                 HomeTeamScore--;
             }
+            else if (team == AwayTeam)
+            {
+                AwayTeamScore--;
+            }
         }
 
         public void TeamScoredGoal(Team team)
