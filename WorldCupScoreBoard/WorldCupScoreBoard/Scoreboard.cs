@@ -11,34 +11,30 @@ namespace WorldCupScoreBoard
             _matches = new List<Match>();
         }
 
-        public void AddMatch(Match match)
+        public Guid StartMatch(Team homeTeam, Team awayTeam)
         {
-            if (_matches.Any(m => m.HomeTeam == match.HomeTeam
-                || m.AwayTeam == match.HomeTeam
-                || m.AwayTeam == match.HomeTeam
-                || m.AwayTeam == match.AwayTeam))
+            if (_matches.Any(m => m.HomeTeam == homeTeam
+                || m.AwayTeam == homeTeam
+                || m.HomeTeam == awayTeam
+                || m.AwayTeam == awayTeam))
             {
                 throw new ArgumentException("Scoreboard already contains a match with the same teams");
             }
 
+            var match = new Match(homeTeam, awayTeam, DateTime.Now);
             _matches.Add(match);
+            match.Start();
+
+            return match.Id;
         }
 
-        public IReadOnlyCollection<string> GetMatchesSummary()
+        public IReadOnlyCollection<MatchSummary> GetMatchesSummary()
         {
-            var index = 1;
             return _matches
                 .OrderBy(m => m.AwayTeamScore + m.HomeTeamScore)
                 .ThenByDescending(m => m.StartTime)
-                .Select(m => $"{index++}. {m.Summary}")
+                .Select(m => new MatchSummary(m.Id, m.Summary, m.Status))
                 .ToImmutableArray();
-        }
-
-        public void StartMatch(Guid id)
-        {
-            var match = GetMatchBeId(id);
-
-            match.Start();
         }
 
         public void FinishMatch(Guid id)
@@ -52,10 +48,6 @@ namespace WorldCupScoreBoard
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
         {
             var match = GetMatchBeId(id);
-            if (match.Status != MatchStatus.Started)
-            {
-                throw new ArgumentException($"Match score cannot be update. Match '{id}' is not started");
-            }
 
             match.UpdateScores(homeTeamScore, awayTeamScore);
         }

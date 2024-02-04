@@ -16,80 +16,69 @@ namespace WorldCupScoreBoard.Test
         public void Scoreboard_Should_Contain_Matches_When_Added()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
 
-            scoreboard.GetMatchesSummary().Should().HaveCount(1);
+            var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
+
+            var summary = scoreboard.GetMatchesSummary();
+            summary.Should().HaveCount(1);
+            summary.Should().Contain((m) => m.Id == newMatchId);
         }
 
         [Fact]
         public void Scoreboard_Should_Not_Allow_Duplicate_Matches()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
 
-            Action act = () => scoreboard.AddMatch(match);
+            var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
+
+            Action act = () => scoreboard.StartMatch(homeTeam, awaitTeam);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage("Scoreboard already contains a match with the same teams");
         }
 
         [Fact]
-        public void Scoreboard_Should_Contain_Correct_Match()
+        public void Scoreboard_Should_Contain_Only_Started_Matches()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
+            var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
+
+            var homeTeam2 = new Team("Italy");
+            var awaitTeam2 = new Team("Spain");
+            var newMatchId2 = scoreboard.StartMatch(homeTeam2, awaitTeam2);
 
             var summary = scoreboard.GetMatchesSummary();
-            summary.Should().Contain((m) => m.Contains(match.Summary));
-        }
-
-        [Fact]
-        public void Scoreboard_Should_Allow_To_Start_Match()
-        {
-            var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
-            scoreboard.StartMatch(match.Id);
-
-            match.Status.Should().Be(MatchStatus.Started);
-        }
-
-        [Fact]
-        public void Scoreboard_Start_Match_Should_Throw_Exception_If_Match_Cannot_Be_Found()
-        {
-            var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
-
-            var matchId = Guid.Empty;
-            Action act = () => scoreboard.StartMatch(matchId);
-
-            act.Should().Throw<ArgumentException>()
-                .WithMessage($"Match with Id '{matchId}' cannot be found");
+            summary.Should().NotContain((m) => m.Status != MatchStatus.Started);
         }
 
         [Fact]
         public void Scoreboard_Should_Allow_To_Finish_Started_Match()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
-            scoreboard.StartMatch(match.Id);
-            scoreboard.FinishMatch(match.Id);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
 
-            match.Status.Should().Be(MatchStatus.Finished);
+            var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
+            scoreboard.FinishMatch(newMatchId);
+
+            var summary = scoreboard.GetMatchesSummary();
+            summary.Should().BeEmpty();
         }
 
         [Fact]
         public void Scoreboard_Finish_Match_Should_Throw_Exception_If_Match_Cannot_Be_Found()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
-            scoreboard.StartMatch(match.Id);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
+
+            scoreboard.StartMatch(homeTeam, awaitTeam);
 
             var matchId = Guid.Empty;
             Action act = () => scoreboard.FinishMatch(matchId);
@@ -102,23 +91,25 @@ namespace WorldCupScoreBoard.Test
         public void Scoreboard_Should_Allow_To_Update_Score()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
-            scoreboard.StartMatch(match.Id);
-            scoreboard.UpdateMatchScore(match.Id, 2, 1);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
+
+            var matchId = scoreboard.StartMatch(homeTeam, awaitTeam);
+            scoreboard.UpdateMatchScore(matchId, 2, 1);
 
             var summary = scoreboard.GetMatchesSummary();
             summary.Should().HaveCount(1);
-            summary.First().Should().Contain(match.Summary);
+            summary.First().Summary.Should().Be("Germany 2 - France 1");
         }
 
         [Fact]
         public void Scoreboard_Update_Match_Score_Should_Throw_Exception_If_Match_Cannot_Be_Found()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
-            scoreboard.StartMatch(match.Id);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
+
+            scoreboard.StartMatch(homeTeam, awaitTeam);
 
             var matchId = Guid.Empty;
             Action act = () => scoreboard.UpdateMatchScore(matchId, 0, 0);
@@ -131,49 +122,19 @@ namespace WorldCupScoreBoard.Test
         public void Scoreboard_Finish_Match_Removes_Match_From_Scoreboard()
         {
             var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            Match match2 = BuildMatch(new Team("Spain"), new Team("Portugal"));
-            scoreboard.AddMatch(match);
-            scoreboard.AddMatch(match2);
-            scoreboard.StartMatch(match.Id);
-            scoreboard.StartMatch(match2.Id);
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
+            var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
 
-            scoreboard.FinishMatch(match2.Id);
+            var homeTeam2 = new Team("Italy");
+            var awaitTeam2 = new Team("Spain");
+            var newMatchId2 = scoreboard.StartMatch(homeTeam2, awaitTeam2);
+
+            scoreboard.FinishMatch(newMatchId2);
 
             var summary = scoreboard.GetMatchesSummary();
             summary.Should().HaveCount(1);
-            summary.First().Should().Contain(match.Summary);
-        }
-
-        [Fact]
-        public void Scoreboard_Update_Match_Score_Should_Throw_Exception_If_Match_Is_Not_Started()
-        {
-            var scoreboard = new Scoreboard();
-            Match match = BuildMatch();
-            scoreboard.AddMatch(match);
-
-            Action act = () => scoreboard.UpdateMatchScore(match.Id, 0, 0);
-
-            act.Should().Throw<ArgumentException>()
-                .WithMessage($"Match score cannot be update. Match '{match.Id}' is not started");
-        }
-
-        private static Match BuildMatch()
-        {
-            var homeTeam = new Team("Germany");
-            var awayTeam = new Team("Brazil");
-            var startTime = new DateTime(2024, 1, 1);
-
-            var match = new Match(homeTeam, awayTeam, startTime);
-            return match;
-        }
-
-        private static Match BuildMatch(Team homeTeam, Team awayTeam)
-        {
-            var startTime = new DateTime(2024, 1, 1);
-
-            var match = new Match(homeTeam, awayTeam, startTime);
-            return match;
+            summary.First().Id.Should().Be(newMatchId);
         }
     }
 }
