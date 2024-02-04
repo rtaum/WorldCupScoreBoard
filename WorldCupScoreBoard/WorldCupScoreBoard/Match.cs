@@ -36,7 +36,7 @@ namespace WorldCupScoreBoard
             }
         }
 
-        public void TeamScoredGoal(Team team)
+        public void TeamScored(Team team)
         {
             if (team == HomeTeam)
             {
