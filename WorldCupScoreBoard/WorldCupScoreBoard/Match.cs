@@ -10,6 +10,7 @@ namespace WorldCupScoreBoard
             StartTime = startTime;
             HomeTeamScore = 0;
             AwayTeamScore = 0;
+            Status = MatchStatus.None;
         }
 
         public Team HomeTeam { get; }
@@ -21,6 +22,8 @@ namespace WorldCupScoreBoard
         public int HomeTeamScore { get; private set; }
 
         public int AwayTeamScore { get; private set; }
+
+        public MatchStatus Status { get; private set; }
 
         public void TeamGoalCancelled(Team team)
         {
