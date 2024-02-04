@@ -152,5 +152,14 @@ namespace WorldCupScoreBoard.Test
 
             match.Status.Should().Be(MatchStatus.Started);
         }
+
+        [Fact]
+        public void Finished_Match_Status_Should_Be_Finished()
+        {
+            var match = new Match(_homeTeam, _awayTeam, DateTime.MinValue);
+            match.Finish();
+
+            match.Status.Should().Be(MatchStatus.Finished);
+        }
     }
 }
