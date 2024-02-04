@@ -45,6 +45,16 @@ namespace WorldCupScoreBoard.Test
             scoreboard.GetMatchesSummary().Should().Contain((m) => m.Id == match.Id);
         }
 
+        [Fact]
+        public void Scoreboard_Should_Ensure_Match_Is_Started()
+        {
+            var scoreboard = new Scoreboard();
+            Match match = BuildMatch();
+            scoreboard.AddMatch(match);
+
+            match.Status.Should().Be(MatchStatus.Started);
+        }
+
         private static Match BuildMatch()
         {
             var homeTeam = new Team("Germany");
