@@ -59,6 +59,10 @@ namespace WorldCupScoreBoard
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
         {
             var match = _matches.FirstOrDefault(m => m.Id == id);
+            if (match == null)
+            {
+                throw new ArgumentException($"Match with Id '{id}' cannot be found");
+            }
 
             match.UpdateScores(homeTeamScore, awayTeamScore);
         }
