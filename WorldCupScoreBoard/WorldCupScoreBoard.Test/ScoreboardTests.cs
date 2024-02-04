@@ -9,7 +9,7 @@ namespace WorldCupScoreBoard.Test
         {
             var scoreboard = new Scoreboard();
 
-            scoreboard.Matches.Should().BeEmpty();
+            scoreboard.GetMatchesSummary().Should().BeEmpty();
         }
     }
 }
