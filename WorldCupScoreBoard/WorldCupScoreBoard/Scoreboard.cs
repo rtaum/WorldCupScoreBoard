@@ -39,7 +39,7 @@ namespace WorldCupScoreBoard
 
         public void FinishMatch(Guid id)
         {
-            var match = GetMatchBeId(id);
+            var match = GetMatchById(id);
 
             match.Finish();
             _matches.Remove(match);
@@ -47,12 +47,12 @@ namespace WorldCupScoreBoard
 
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
         {
-            var match = GetMatchBeId(id);
+            var match = GetMatchById(id);
 
             match.UpdateScores(homeTeamScore, awayTeamScore);
         }
 
-        private Match GetMatchBeId(Guid id)
+        private Match GetMatchById(Guid id)
         {
             var match = _matches.FirstOrDefault(m => m.Id == id);
             if (match == null)
