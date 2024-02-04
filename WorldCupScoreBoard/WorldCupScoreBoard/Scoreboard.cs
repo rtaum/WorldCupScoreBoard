@@ -21,6 +21,7 @@ namespace WorldCupScoreBoard
                 throw new ArgumentException("Scoreboard already contains a match with the same teams");
             }
 
+            match.Start();
             _matches.Add(match);
         }
 
