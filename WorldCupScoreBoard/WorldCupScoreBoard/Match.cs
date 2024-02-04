@@ -1,5 +1,4 @@
-﻿
-namespace WorldCupScoreBoard
+﻿namespace WorldCupScoreBoard
 {
     public class Match
     {
@@ -11,7 +10,10 @@ namespace WorldCupScoreBoard
             HomeTeamScore = 0;
             AwayTeamScore = 0;
             Status = MatchStatus.None;
+            Id = Guid.NewGuid();
         }
+
+        public Guid Id { get; }
 
         public Team HomeTeam { get; }
 
