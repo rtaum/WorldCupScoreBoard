@@ -46,11 +46,12 @@ namespace WorldCupScoreBoard.Test
         }
 
         [Fact]
-        public void Scoreboard_Should_Ensure_Match_Is_Started()
+        public void Scoreboard_Should_Allow_To_Start_Match()
         {
             var scoreboard = new Scoreboard();
             Match match = BuildMatch();
             scoreboard.AddMatch(match);
+            scoreboard.StartMatch(match.Id);
 
             match.Status.Should().Be(MatchStatus.Started);
         }
