@@ -36,5 +36,13 @@ namespace WorldCupScoreBoard.Test
             _match.HomeTeamScore.Should().Be(1);
             _match.AwayTeamScore.Should().Be(0);
         }
+
+        [Fact]
+        public void Match_Away_Team_Goal_Changes_Score_Value()
+        {
+            _match.TeamScoredGoal(_awayTeam);
+            _match.HomeTeamScore.Should().Be(0);
+            _match.AwayTeamScore.Should().Be(1);
+        }
     }
 }
