@@ -145,6 +145,20 @@ namespace WorldCupScoreBoard.Test
             summary.First().Should().Contain(match.Summary);
         }
 
+        [Fact]
+        public void Scoreboard_Update_Match_Score_Should_Throw_Exception_If_Match_Is_Not_Started()
+        {
+            var scoreboard = new Scoreboard();
+            Match match = BuildMatch();
+            scoreboard.AddMatch(match);
+
+            var matchId = Guid.Empty;
+            Action act = () => scoreboard.UpdateMatchScore(matchId, 0, 0);
+
+            act.Should().Throw<ArgumentException>()
+                .WithMessage($"Match score cannot be update. Match '{matchId}' is not started");
+        }
+
         private static Match BuildMatch()
         {
             var homeTeam = new Team("Germany");
