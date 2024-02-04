@@ -24,20 +24,12 @@ namespace WorldCupScoreBoard
         {
             if (team == HomeTeam)
             {
-                if (HomeTeamScore == 0)
-                {
-                    throw new InvalidOperationException("Score can not be negative");
-                }
-
+                CheckScoreBeforeCancellation(HomeTeamScore);
                 HomeTeamScore--;
             }
             else if (team == AwayTeam)
             {
-                if (AwayTeamScore == 0)
-                {
-                    throw new InvalidOperationException("Score can not be negative");
-                }
-
+                CheckScoreBeforeCancellation(AwayTeamScore);
                 AwayTeamScore--;
             }
             else
@@ -59,6 +51,14 @@ namespace WorldCupScoreBoard
             else
             {
                 throw new ArgumentException(nameof(team), $"Team {team.Name} is not in the match.");
+            }
+        }
+
+        private void CheckScoreBeforeCancellation(int teamScore)
+        {
+            if (teamScore == 0)
+            {
+                throw new InvalidOperationException("Score can not be negative");
             }
         }
     }
