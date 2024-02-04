@@ -54,5 +54,17 @@ namespace WorldCupScoreBoard.Test
             act.Should().Throw<ArgumentException>()
                 .WithParameterName($"Team {_outOfRangeTeam.Name} is not in the match.");
         }
+
+        [Fact]
+        public void Match_Home_Team_Goal_Cancelled_Changes_Score_Value()
+        {
+            _match.TeamScoredGoal(_homeTeam);
+            _match.TeamScoredGoal(_homeTeam);
+            _match.TeamScoredGoal(_homeTeam);
+            _match.TeamGoalCancelled(_homeTeam);
+
+            _match.HomeTeamScore.Should().Be(2);
+            _match.AwayTeamScore.Should().Be(0);
+        }
     }
 }
