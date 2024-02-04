@@ -98,6 +98,20 @@ namespace WorldCupScoreBoard.Test
                 .WithMessage($"Match with Id '{matchId}' cannot be found");
         }
 
+        [Fact]
+        public void Scoreboard_Should_Allow_To_Update_Score()
+        {
+            var scoreboard = new Scoreboard();
+            Match match = BuildMatch();
+            scoreboard.AddMatch(match);
+            scoreboard.StartMatch(match.Id);
+            scoreboard.UpdateMatchScore(match.Id, 2, 1);
+
+            var summary = scoreboard.GetMatchesSummary();
+            summary.Should().HaveCount(1);
+            summary.First().Should().Contain(match.Summary);
+        }
+
         private static Match BuildMatch()
         {
             var homeTeam = new Team("Germany");
