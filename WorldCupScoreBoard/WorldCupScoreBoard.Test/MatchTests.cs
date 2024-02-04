@@ -126,5 +126,14 @@ namespace WorldCupScoreBoard.Test
             act.Should().Throw<ArgumentException>()
                 .WithMessage("Score can not be negative");
         }
+
+        [Fact]
+        public void Match_Should_Be_Started_Right_Away()
+        {
+            DateTime startTime = new DateTime(2024, 2, 4);
+            var match = new Match(_homeTeam, _awayTeam, startTime);
+
+            _match.StartTime.Should().Be(startTime);
+        }
     }
 }
