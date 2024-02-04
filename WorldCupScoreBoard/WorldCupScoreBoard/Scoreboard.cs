@@ -24,11 +24,13 @@ namespace WorldCupScoreBoard
             _matches.Add(match);
         }
 
-        public IReadOnlyCollection<Match> GetMatchesSummary()
+        public IReadOnlyCollection<string> GetMatchesSummary()
         {
+            var index = 1;
             return _matches
                 .OrderBy(m => m.AwayTeamScore + m.HomeTeamScore)
                 .ThenByDescending(m => m.StartTime)
+                .Select(m => $"{index++}. {m.Summary}")
                 .ToImmutableArray();
         }
 

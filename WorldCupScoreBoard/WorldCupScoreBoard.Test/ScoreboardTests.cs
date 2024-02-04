@@ -42,7 +42,8 @@ namespace WorldCupScoreBoard.Test
             Match match = BuildMatch();
             scoreboard.AddMatch(match);
 
-            scoreboard.GetMatchesSummary().Should().Contain((m) => m.Id == match.Id);
+            var summary = scoreboard.GetMatchesSummary();
+            summary.Should().Contain((m) => m.Contains(match.Summary));
         }
 
         [Fact]
@@ -101,6 +102,14 @@ namespace WorldCupScoreBoard.Test
         {
             var homeTeam = new Team("Germany");
             var awayTeam = new Team("Brazil");
+            var startTime = new DateTime(2024, 1, 1);
+
+            var match = new Match(homeTeam, awayTeam, startTime);
+            return match;
+        }
+
+        private static Match BuildMatch(Team homeTeam, Team awayTeam)
+        {
             var startTime = new DateTime(2024, 1, 1);
 
             var match = new Match(homeTeam, awayTeam, startTime);

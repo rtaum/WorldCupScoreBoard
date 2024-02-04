@@ -27,6 +27,8 @@
 
         public MatchStatus Status { get; private set; }
 
+        public string Summary => $"{HomeTeam.Name} {HomeTeamScore} - {AwayTeam.Name} {AwayTeamScore}";
+
         public void Start()
         {
             if (Status == MatchStatus.Started)
