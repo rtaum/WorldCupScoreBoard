@@ -11,6 +11,11 @@ namespace WorldCupScoreBoard
             _matches = new List<Match>();
         }
 
+        public void AddMatch(Match match)
+        {
+            _matches.Add(match);
+        }
+
         public IReadOnlyCollection<Match> GetMatchesSummary()
         {
             return _matches
