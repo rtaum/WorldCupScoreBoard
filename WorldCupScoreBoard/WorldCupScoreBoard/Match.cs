@@ -30,6 +30,10 @@ namespace WorldCupScoreBoard
             {
                 AwayTeamScore--;
             }
+            else
+            {
+                throw new ArgumentException(nameof(team), $"Team {team.Name} is not in the match.");
+            }
         }
 
         public void TeamScoredGoal(Team team)
