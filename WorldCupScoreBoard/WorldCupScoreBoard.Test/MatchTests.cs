@@ -160,6 +160,17 @@ namespace WorldCupScoreBoard.Test
         }
 
         [Fact]
+        public void Match_Should_Throw_Exception_If_It_Is_Already_Started()
+        {
+            var match = new Match(_homeTeam, _awayTeam, DateTime.MinValue);
+            match.Start();
+            Action act = () => match.Start();
+
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("Match is already started");
+        }
+
+        [Fact]
         public void Finished_Match_Status_Should_Be_Finished()
         {
             var match = new Match(_homeTeam, _awayTeam, DateTime.MinValue);
