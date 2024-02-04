@@ -112,5 +112,16 @@ namespace WorldCupScoreBoard.Test
             _match.HomeTeamScore.Should().Be(2);
             _match.AwayTeamScore.Should().Be(1);
         }
+
+        [Theory]
+        [InlineData(0, -1)]
+        [InlineData(-1, -1)]
+        [InlineData(-1, 0)]
+        public void Match_Update_Teams_Score_With_Negative_Values_Should_Throw_Exception(int homeTeamScore, int awayTeamScore)
+        {
+            Action act = () => _match.UpdateScores(homeTeamScore, awayTeamScore);
+            act.Should().Throw<ArgumentOutOfRangeException>()
+                .WithMessage("Score can not be negative");
+        }
     }
 }
