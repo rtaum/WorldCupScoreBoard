@@ -3,11 +3,11 @@ namespace WorldCupScoreBoard
 {
     public class Match
     {
-        public Match(Team homeTeam, Team awayTeam)
+        public Match(Team homeTeam, Team awayTeam, DateTime startTime)
         {
             HomeTeam = homeTeam;
             AwayTeam = awayTeam;
-
+            StartTime = startTime;
             HomeTeamScore = 0;
             AwayTeamScore = 0;
         }
@@ -15,6 +15,8 @@ namespace WorldCupScoreBoard
         public Team HomeTeam { get; }
 
         public Team AwayTeam { get; }
+
+        public DateTime StartTime { get; }
 
         public int HomeTeamScore { get; private set; }
 

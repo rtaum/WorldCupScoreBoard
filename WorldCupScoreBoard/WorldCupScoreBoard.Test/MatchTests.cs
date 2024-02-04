@@ -14,7 +14,7 @@ namespace WorldCupScoreBoard.Test
             _homeTeam = new Team("Germany");
             _awayTeam = new Team("Brazil");
             _outOfRangeTeam = new Team("Italy");
-            _match = new Match(_homeTeam, _awayTeam);
+            _match = new Match(_homeTeam, _awayTeam, DateTime.MinValue);
         }
 
         [Fact]
@@ -128,12 +128,12 @@ namespace WorldCupScoreBoard.Test
         }
 
         [Fact]
-        public void Match_Should_Be_Started_Right_Away()
+        public void Match_StartTime_Should_Be_Correct()
         {
             DateTime startTime = new DateTime(2024, 2, 4);
             var match = new Match(_homeTeam, _awayTeam, startTime);
 
-            _match.StartTime.Should().Be(startTime);
+            match.StartTime.Should().Be(startTime);
         }
     }
 }
