@@ -127,6 +127,24 @@ namespace WorldCupScoreBoard.Test
                 .WithMessage($"Match with Id '{matchId}' cannot be found");
         }
 
+        [Fact]
+        public void Scoreboard_Finish_Match_Removes_Match_From_Scoreboard()
+        {
+            var scoreboard = new Scoreboard();
+            Match match = BuildMatch();
+            Match match2 = BuildMatch(new Team("Spain"), new Team("Portugal"));
+            scoreboard.AddMatch(match);
+            scoreboard.AddMatch(match2);
+            scoreboard.StartMatch(match.Id);
+            scoreboard.StartMatch(match2.Id);
+
+            scoreboard.FinishMatch(match2.Id);
+
+            var summary = scoreboard.GetMatchesSummary();
+            summary.Should().HaveCount(1);
+            summary.First().Should().Contain(match.Summary);
+        }
+
         private static Match BuildMatch()
         {
             var homeTeam = new Team("Germany");
