@@ -44,6 +44,7 @@ namespace WorldCupScoreBoard
 
             match.Start();
         }
+        
         public void FinishMatch(Guid id)
         {
             var match = _matches.FirstOrDefault(m => m.Id == id);
@@ -53,6 +54,13 @@ namespace WorldCupScoreBoard
             }
 
             match.Finish();
+        }
+
+        public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
+        {
+            var match = _matches.FirstOrDefault(m => m.Id == id);
+
+            match.UpdateScores(homeTeamScore, awayTeamScore);
         }
     }
 }
