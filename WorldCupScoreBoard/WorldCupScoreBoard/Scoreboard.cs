@@ -46,6 +46,7 @@ namespace WorldCupScoreBoard
             var match = GetMatchBeId(id);
 
             match.Finish();
+            _matches.Remove(match);
         }
 
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
