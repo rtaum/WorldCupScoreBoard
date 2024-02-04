@@ -33,7 +33,12 @@
             {
                 throw new InvalidOperationException("Match is already started");
             }
-            
+
+            if (Status == MatchStatus.Finished)
+            {
+                throw new InvalidOperationException("Match is already finished");
+            }
+
             Status = MatchStatus.Started;
         }
 
