@@ -21,7 +21,6 @@ namespace WorldCupScoreBoard
                 throw new ArgumentException("Scoreboard already contains a match with the same teams");
             }
 
-            match.Start();
             _matches.Add(match);
         }
 
@@ -31,6 +30,15 @@ namespace WorldCupScoreBoard
                 .OrderBy(m => m.AwayTeamScore + m.HomeTeamScore)
                 .ThenByDescending(m => m.StartTime)
                 .ToImmutableArray();
+        }
+
+        public void StartMatch(Guid id)
+        {
+            var match = _matches.FirstOrDefault(m => m.Id == id);
+            if (match != null)
+            {
+                match.Start();
+            }
         }
     }
 }
