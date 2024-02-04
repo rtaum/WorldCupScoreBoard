@@ -30,6 +30,11 @@ namespace WorldCupScoreBoard
             Status = MatchStatus.Started;
         }
 
+        public void Finish()
+        {
+            Status = MatchStatus.Finished;
+        }
+
         public void TeamGoalCancelled(Team team)
         {
             if (team == HomeTeam)
