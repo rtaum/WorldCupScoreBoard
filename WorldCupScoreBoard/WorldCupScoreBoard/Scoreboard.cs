@@ -42,5 +42,11 @@ namespace WorldCupScoreBoard
 
             match.Start();
         }
+        public void FinishMatch(Guid id)
+        {
+            var match = _matches.FirstOrDefault(m => m.Id == id);
+
+            match.Finish();
+        }
     }
 }
