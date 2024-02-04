@@ -45,6 +45,10 @@ namespace WorldCupScoreBoard
         public void FinishMatch(Guid id)
         {
             var match = _matches.FirstOrDefault(m => m.Id == id);
+            if (match == null)
+            {
+                throw new ArgumentException($"Match with Id '{id}' cannot be found");
+            }
 
             match.Finish();
         }
