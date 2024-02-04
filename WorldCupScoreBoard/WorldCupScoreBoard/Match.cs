@@ -24,6 +24,11 @@ namespace WorldCupScoreBoard
         {
             if (team == HomeTeam)
             {
+                if (HomeTeamScore == 0)
+                {
+                    throw new InvalidOperationException("Score can not be negative");
+                }
+
                 HomeTeamScore--;
             }
             else if (team == AwayTeam)

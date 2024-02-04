@@ -93,7 +93,7 @@ namespace WorldCupScoreBoard.Test
         {
             Action act = () => _match.TeamGoalCancelled(_homeTeam);
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage($"Score can not be negative");
+                .WithMessage("Score can not be negative");
         }
     }
 }
