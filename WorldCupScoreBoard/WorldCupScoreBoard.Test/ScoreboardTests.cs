@@ -156,5 +156,31 @@ namespace WorldCupScoreBoard.Test
             summary.First().Id.Should().Be(newMatchId);
             summary.Last().Id.Should().Be(newMatchId2);
         }
+
+        [Fact]
+        public void Scoreboard_Match_With_Equal_Total_Score_Should_Be_Ordered_By_Startdate()
+        {
+            var scoreboard = new Scoreboard();
+            var homeTeam = new Team("Germany");
+            var awaitTeam = new Team("France");
+            var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
+
+            var homeTeam2 = new Team("Italy");
+            var awaitTeam2 = new Team("Spain");
+            var newMatchId2 = scoreboard.StartMatch(homeTeam2, awaitTeam2);
+
+            var homeTeam3 = new Team("USA");
+            var awaitTeam3 = new Team("Ghana");
+            var newMatchId3 = scoreboard.StartMatch(homeTeam3, awaitTeam3);
+
+            scoreboard.UpdateMatchScore(newMatchId, 1, 0);
+            scoreboard.UpdateMatchScore(newMatchId2, 1, 0);
+
+            var summary = scoreboard.GetMatchesSummary();
+            summary.Should().HaveCount(3);
+            summary.ElementAt(0).Id.Should().Be(newMatchId2);
+            summary.ElementAt(1).Id.Should().Be(newMatchId);
+            summary.ElementAt(2).Id.Should().Be(newMatchId3);
+        }
     }
 }
