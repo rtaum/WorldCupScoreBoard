@@ -54,6 +54,12 @@ namespace WorldCupScoreBoard
             }
         }
 
+        public void UpdateScores(int homeTeamScore, int awayTeamScore)
+        {
+            HomeTeamScore = homeTeamScore;
+            AwayTeamScore = awayTeamScore;
+        }
+
         private void CheckScoreBeforeCancellation(int teamScore)
         {
             if (teamScore == 0)
