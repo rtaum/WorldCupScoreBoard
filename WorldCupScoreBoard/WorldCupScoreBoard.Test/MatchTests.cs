@@ -25,6 +25,12 @@ namespace WorldCupScoreBoard.Test
         }
 
         [Fact]
+        public void Match_Id_Should_Not_Be_Empty()
+        {
+            _match.Id.Should().NotBeEmpty();
+        }
+
+        [Fact]
         public void Match_Should_Start_With_No_Scores()
         {
             _match.HomeTeamScore.Should().Be(0);
