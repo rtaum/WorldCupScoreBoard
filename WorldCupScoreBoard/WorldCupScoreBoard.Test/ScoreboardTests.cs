@@ -57,7 +57,7 @@ namespace WorldCupScoreBoard.Test
         }
 
         [Fact]
-        public void Scoreboard_Should_Should_Throw_Exception_If_Match_Cannot_Be_Found()
+        public void Scoreboard_Start_Match_Should_Throw_Exception_If_Match_Cannot_Be_Found()
         {
             var scoreboard = new Scoreboard();
             Match match = BuildMatch();
@@ -80,6 +80,21 @@ namespace WorldCupScoreBoard.Test
             scoreboard.FinishMatch(match.Id);
 
             match.Status.Should().Be(MatchStatus.Finished);
+        }
+
+        [Fact]
+        public void Scoreboard_Finish_Match_Should_Throw_Exception_If_Match_Cannot_Be_Found()
+        {
+            var scoreboard = new Scoreboard();
+            Match match = BuildMatch();
+            scoreboard.AddMatch(match);
+            scoreboard.StartMatch(match.Id);
+
+            var matchId = Guid.Empty;
+            Action act = () => scoreboard.FinishMatch(matchId);
+
+            act.Should().Throw<ArgumentException>()
+                .WithMessage($"Match with Id '{matchId}' cannot be found");
         }
 
         private static Match BuildMatch()
