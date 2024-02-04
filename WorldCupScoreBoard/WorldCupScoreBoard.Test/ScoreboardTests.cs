@@ -56,6 +56,20 @@ namespace WorldCupScoreBoard.Test
             match.Status.Should().Be(MatchStatus.Started);
         }
 
+        [Fact]
+        public void Scoreboard_Should_Should_Throw_Exception_If_Match_Cannot_Be_Found()
+        {
+            var scoreboard = new Scoreboard();
+            Match match = BuildMatch();
+            scoreboard.AddMatch(match);
+
+            var matchId = Guid.Empty;
+            Action act = () => scoreboard.StartMatch(matchId);
+
+            act.Should().Throw<ArgumentException>()
+                .WithMessage($"Match with Id '{matchId}' cannot be found");
+        }
+
         private static Match BuildMatch()
         {
             var homeTeam = new Team("Germany");
