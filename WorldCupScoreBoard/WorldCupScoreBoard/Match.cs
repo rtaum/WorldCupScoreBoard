@@ -1,4 +1,5 @@
-﻿namespace WorldCupScoreBoard
+﻿
+namespace WorldCupScoreBoard
 {
     public class Match
     {
@@ -12,11 +13,27 @@
         }
 
         public Team HomeTeam { get; }
-        
+
         public Team AwayTeam { get; }
 
         public int HomeTeamScore { get; private set; }
 
         public int AwayTeamScore { get; private set; }
+
+        public void TeamScoredGoal(Team team)
+        {
+            if (team == HomeTeam)
+            {
+                HomeTeamScore++;
+            }
+            else if (team == AwayTeam)
+            {
+                AwayTeamScore++;
+            }
+            else
+            {
+                throw new ArgumentException(nameof(team));
+            }
+        }
     }
 }
