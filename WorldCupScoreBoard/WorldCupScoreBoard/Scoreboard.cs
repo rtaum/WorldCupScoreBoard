@@ -4,16 +4,16 @@ namespace WorldCupScoreBoard
 {
     public class Scoreboard
     {
-        private readonly List<Match> _matches;
+        private readonly IMatchProvider _matchProvider;
 
-        public Scoreboard()
+        public Scoreboard(IMatchProvider matchProvider)
         {
-            _matches = new List<Match>();
+            _matchProvider = matchProvider;
         }
 
         public Guid StartMatch(Team homeTeam, Team awayTeam)
         {
-            if (_matches.Any(m => m.HomeTeam == homeTeam
+            if (_matchProvider.Matches.Any(m => m.HomeTeam == homeTeam
                 || m.AwayTeam == homeTeam
                 || m.HomeTeam == awayTeam
                 || m.AwayTeam == awayTeam))
@@ -21,8 +21,7 @@ namespace WorldCupScoreBoard
                 throw new ArgumentException("Scoreboard already contains a match with the same teams");
             }
 
-            var match = new Match(homeTeam, awayTeam, DateTime.Now);
-            _matches.Add(match);
+            var match = _matchProvider.AddNewMatchForTeams(homeTeam, awayTeam);
             match.Start();
 
             return match.Id;
@@ -30,7 +29,7 @@ namespace WorldCupScoreBoard
 
         public IReadOnlyCollection<MatchSummary> GetMatchesSummary()
         {
-            return _matches
+            return _matchProvider.Matches
                 .OrderByDescending(m => m.AwayTeamScore + m.HomeTeamScore)
                 .ThenByDescending(m => m.StartTime)
                 .Select(m => new MatchSummary(m.Id, m.Summary, m.Status))
@@ -42,7 +41,7 @@ namespace WorldCupScoreBoard
             var match = GetMatchById(id);
 
             match.Finish();
-            _matches.Remove(match);
+            _matchProvider.RemoveMatch(match);
         }
 
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
@@ -54,7 +53,7 @@ namespace WorldCupScoreBoard
 
         private Match GetMatchById(Guid id)
         {
-            var match = _matches.FirstOrDefault(m => m.Id == id);
+            var match = _matchProvider.GetMatchById(id);
             if (match == null)
             {
                 throw new ArgumentException($"Match with Id '{id}' cannot be found");

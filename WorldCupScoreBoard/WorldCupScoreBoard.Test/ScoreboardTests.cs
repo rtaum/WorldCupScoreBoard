@@ -4,10 +4,17 @@ namespace WorldCupScoreBoard.Test
 {
     public class ScoreboardTests
     {
+        private readonly IMatchProvider _matchProvider;
+
+        public ScoreboardTests()
+        {
+            _matchProvider = new MatchProvider();
+        }
+
         [Fact]
         public void Scoreboard_Should_Be_Empty()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
 
             scoreboard.GetMatchesSummary().Should().BeEmpty();
         }
@@ -15,7 +22,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Should_Contain_Matches_When_Added()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
 
@@ -29,7 +36,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Should_Not_Allow_Duplicate_Matches()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
 
@@ -44,7 +51,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Should_Contain_Only_Started_Matches()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
             var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
@@ -60,7 +67,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Should_Allow_To_Finish_Started_Match()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
 
@@ -74,7 +81,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Finish_Match_Should_Throw_Exception_If_Match_Cannot_Be_Found()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
 
@@ -90,7 +97,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Should_Allow_To_Update_Score()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
 
@@ -105,7 +112,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Update_Match_Score_Should_Throw_Exception_If_Match_Cannot_Be_Found()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
 
@@ -121,7 +128,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Finish_Match_Removes_Match_From_Scoreboard()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
             var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
@@ -140,7 +147,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Match_With_Most_Total_Score_Should_Come_First()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
             var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
@@ -160,7 +167,7 @@ namespace WorldCupScoreBoard.Test
         [Fact]
         public void Scoreboard_Match_With_Equal_Total_Score_Should_Be_Ordered_By_Startdate()
         {
-            var scoreboard = new Scoreboard();
+            var scoreboard = new Scoreboard(_matchProvider);
             var homeTeam = new Team("Germany");
             var awaitTeam = new Team("France");
             var newMatchId = scoreboard.StartMatch(homeTeam, awaitTeam);
