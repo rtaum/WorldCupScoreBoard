@@ -4,16 +4,16 @@ namespace WorldCupScoreBoard
 {
     public class Scoreboard
     {
-        private readonly IMatchProvider _matchProvider;
+        private readonly List<Match> _matches;
 
-        public Scoreboard(IMatchProvider matchProvider)
+        public Scoreboard()
         {
-            _matchProvider = matchProvider;
+            _matches = new List<Match>();
         }
 
         public Guid StartMatch(Team homeTeam, Team awayTeam)
         {
-            if (_matchProvider.Matches.Any(m => m.HomeTeam == homeTeam
+            if (_matches.Any(m => m.HomeTeam == homeTeam
                 || m.AwayTeam == homeTeam
                 || m.HomeTeam == awayTeam
                 || m.AwayTeam == awayTeam))
@@ -21,15 +21,16 @@ namespace WorldCupScoreBoard
                 throw new ArgumentException("Scoreboard already contains a match with the same teams");
             }
 
-            var match = _matchProvider.AddNewMatchForTeams(homeTeam, awayTeam);
+            var match = new Match(homeTeam, awayTeam);
             match.Start();
+            _matches.Add(match);
 
             return match.Id;
         }
 
         public IReadOnlyCollection<MatchSummary> GetMatchesSummary()
         {
-            return _matchProvider.Matches
+            return _matches
                 .OrderByDescending(m => m.AwayTeamScore + m.HomeTeamScore)
                 .ThenByDescending(m => m.StartTime)
                 .Select(m => new MatchSummary(m.Id, m.Summary, m.Status))
@@ -41,7 +42,7 @@ namespace WorldCupScoreBoard
             var match = GetMatchById(id);
 
             match.Finish();
-            _matchProvider.RemoveMatch(match);
+            _matches.Remove(match);
         }
 
         public void UpdateMatchScore(Guid id, int homeTeamScore, int awayTeamScore)
@@ -53,7 +54,7 @@ namespace WorldCupScoreBoard
 
         private Match GetMatchById(Guid id)
         {
-            var match = _matchProvider.GetMatchById(id);
+            var match = _matches.FirstOrDefault(m => m.Id == id);
             if (match == null)
             {
                 throw new ArgumentException($"Match with Id '{id}' cannot be found");

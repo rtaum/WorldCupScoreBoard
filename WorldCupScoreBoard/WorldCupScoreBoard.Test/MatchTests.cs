@@ -122,6 +122,7 @@ namespace WorldCupScoreBoard.Test
         [InlineData(100, 50)]
         public void Match_Update_Teams_Score_Should_Change_Scores(int homeTeamScore, int awayTeamScore)
         {
+            _match.Start();
             _match.UpdateScores(homeTeamScore, awayTeamScore);
 
             _match.HomeTeamScore.Should().Be(homeTeamScore);
@@ -183,16 +184,28 @@ namespace WorldCupScoreBoard.Test
             match.Start();
             match.Finish();
 
-            Action act = () => match.Start();
+            Action act = () => match.Finish();
 
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage("Match is already finished");
+                .WithMessage("Match is not started");
+        }
+
+        [Fact]
+        public void Match_Update_Score_Should_Throw_Exception_If_It_Is_Not_Started()
+        {
+            var match = new Match(_homeTeam, _awayTeam, DateTime.MinValue);
+
+            Action act = () => match.UpdateScores(1, 1);
+
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("Match is not started. Scores can not be updated");
         }
 
         [Fact]
         public void Finished_Match_Status_Should_Be_Finished()
         {
             var match = new Match(_homeTeam, _awayTeam, DateTime.MinValue);
+            match.Start();
             match.Finish();
 
             match.Status.Should().Be(MatchStatus.Finished);

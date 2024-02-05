@@ -13,6 +13,11 @@
             Id = Guid.NewGuid();
         }
 
+        public Match(Team homeTeam, Team awayTeam)
+            : this(homeTeam, awayTeam, DateTime.Now)
+        {
+        }
+
         public Guid Id { get; }
 
         public Team HomeTeam { get; }
@@ -46,6 +51,11 @@
 
         public void Finish()
         {
+            if (Status != MatchStatus.Started)
+            {
+                throw new InvalidOperationException("Match is not started");
+            }
+
             Status = MatchStatus.Finished;
         }
 
@@ -89,6 +99,11 @@
             {
                 // Scores cannot have negative values
                 throw new ArgumentException("Score can not be negative");
+            }
+
+            if (Status != MatchStatus.Started)
+            {
+                throw new InvalidOperationException("Match is not started. Scores can not be updated");
             }
 
             // theoretically score can change in any way. Goals can be scored or cancelled.
